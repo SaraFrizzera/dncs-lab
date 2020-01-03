@@ -117,7 +117,7 @@ The assignment deliverable consists of a Github repository containing:
 
 
 # Design
-![Schema](/home/sara/Desktop/design.png)
+![Schema](design.jpg)
 ## Subnets and IP addresses
 
 The IP addresses assigned were chosen following the requirements specified in the answers.yml file. The class of IP addresses used is 192.168.0.0/16:
