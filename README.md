@@ -117,9 +117,10 @@ The assignment deliverable consists of a Github repository containing:
 
 
 # Design
-## Subnets
+![Schema](/home/sara/Desktop/design.png)
+## Subnets and IP addresses
 
-The IP addresses assigned are chosen following the requirements specified in the answers.yml file. The class of IP addresses used is 192.168.0.0/16:
+The IP addresses assigned were chosen following the requirements specified in the answers.yml file. The class of IP addresses used is 192.168.0.0/16:
 
     "Host-A" must scale up to 273 usable addresses, it contains Host-A and 237 other hosts + router-1 port eth1
     "Host-B" must scale up to 504 usable addresses, it contains Host-B and 6 other hosts + router-1 port eth1
@@ -129,30 +130,32 @@ The IP addresses assigned are chosen following the requirements specified in the
 
 | Device       | Network       | Subnet              |  Broadcast    | Hosts | Host-min      | Host-max      |
 |--------------|---------------|---------------------|---------------|-------|---------------|---------------|
-| Host-a       | 192.168.2.0   | 255.255.254.0 - /23 | 192.168.3.255 | 510   | 192.168.2.1 	 | 192.168.2.254 |
-| Host-b       | 192.168.3.0   | 255.255.254.0 - /23 | 192.168.3.255 | 510   | 192.168.3.1   | 192.168.3.254 |
+| Host-a       | 192.168.2.0   | 255.255.254.0 - /23 | 192.168.3.255 | 510   | 192.168.2.1   | 192.168.2.254 |
+| Host-b       | 192.168.3.0   | 255.255.254.0 - /23 | 192.168.9.255 | 510   | 192.168.8.1   | 192.168.9.254 |
 | Host-c       | 192.168.1.0   | 255.255.255.0 - /24 | 192.168.1.255 | 254   | 192.168.1.1   | 192.168.1.254 |
-| Router       | 10.0.0.4      | 255.255.255.252 -/30| 10.0.0.7      | 2     | 10.0.0.5      | 10.0.0.6      |
+| Router       | 10.0.0.0      | 255.255.255.252 -/30| 10.0.0.7      | 2     | 10.0.0.5      | 10.0.0.6      |
 
 ## VLANs
+The subnet hosting host-a and the one hosting host-b must have different broadcast domains on the switch. //?
+The link between the router and both LANs is in trunk mode to manage the traffic simultaneously from both of them on the same interface.
 
 | Subnet | Interface |   Host   | Vlan tag |     IP      |
 |:------:|:---------:|:--------:|:--------:|:-----------:|
 |    A   | eth1.10   | router-1 |    10    | 192.168.2.1 |
-|    C   | eth1.20   | router-1 |    20    | 192.168.1.1 |
+|    B   | eth1.20   | router-1 |    20    | 192.168.1.1 |
 
 ## Network map configured with IPs
 
-|   Host   | Interface | VLAN tag |  IP address  |             Description             |
-|:--------:|:---------:|:--------:|:------------:|:-----------------------------------:|
-| router-1 | eth1.10   |    10    |  192.168.2.1 |    Default gateway for network A    |   
-|          | eth1.20   |    20    |  192.168.1.1 |    Default gateway for network C    |   
-|          |   eth2    |   None   |  10.0.0.5    |           Link to router-2          |   
-|  host-a  |   eth1    |   None   |  192.168.2.2 | Link with access port on the switch |   
-|  host-b  |   eth1    |   None   |  192.168.3.1 | Link with access port on the switch |   
-| router-2 |   eth2    |   None   |  10.0.0.6    |          Link to router-1           |   
-|          |   eth1    |   None   |  192.168.1.2 |            Link to host-c           |   
-|  host-c  |   eth1    |   None   |  192.168.1.3 |           Link to router-2          |   
+|   Host   | Interface | VLAN tag |  IP address    |             Description             |
+|:--------:|:---------:|:--------:|:--------------:|:-----------------------------------:|
+| router-1 | eth1.10   |    10    |  192.168.7.254 |    Default gateway for network A    |   
+|          | eth1.20   |    20    |  192.168.3.254 |    Default gateway for network B    |   
+|          |   eth2    |   None   |  10.0.0.1      |           Link to router-2          |   
+|  host-a  |   eth1    |   None   |  192.168.2.1   | Link with access port on the switch |   
+|  host-b  |   eth1    |   None   |  192.168.8.1   | Link with access port on the switch |   
+| router-2 |   eth2    |   None   |  10.0.0.2      |          Link to router-1           |   
+|          |   eth1    |   None   |  192.168.1.254 |            Link to host-c           |   
+|  host-c  |   eth1    |   None   |  192.168.1.1   |           Link to router-2          |   
 
 
         +----------------------------------------------------------------------+
@@ -162,14 +165,14 @@ The IP addresses assigned are chosen following the requirements specified in the
         |     |                  |            |                          |            |
         |     |            eth0  |            |eth2                eth2  |            |
         |     +------------------+  router-1  +--------------------------+  router-2  |
-        |     |                  |            |.5                      .6|            |
-        |     |                  |            |      172.16.3.64/30      |            |
+        |     |                  |            |.1                      .2|            |
+        |     |                  |            |      10.0.0.0/30         |            |
         |  M  |                  +------------+                          +------------+
-        |  A  |          192.168.2.1/23 |eth1.10                        eth1   |.2
-        |  N  |          192.168.1.1/23 |eth1.20                               |
+        |  A  |          192.168.7.254/23 |eth1.10                        eth1 |.254
+        |  N  |          192.168.3.254/23 |eth1.20                             |
         |  A  |                         |                                      |     
-        |  G  |                         |                       192.168.1.3/24 |
-        |  E  |                         |eth1                           eth1   |.3
+        |  G  |                         |                     192.168.1.254/24 |
+        |  E  |                         |eth1                           eth1   |.1
         |  M  |            +--------------------------+                  +-----+----+
         |  E  |     eth0   |          TRUNK           |                  |          |
         |  N  +------------+         SWITCH           |                  |          |
@@ -178,7 +181,7 @@ The IP addresses assigned are chosen following the requirements specified in the
         |  V  |               |eth1.10             |eth1.20              |          |
         |  A  |               |                    |                     +----------+
         |  G  |               |                    |                           |eth0
-        |  R  |               | 192.168.2.2/23     | 192.168.3.1/23            |
+        |  R  |               | 192.168.2.1/23     | 192.168.8.1/23            |
         |  A  |               | eth1               |eth1                       |
         |  N  |         +----------+           +----------+                    |
         |  T  |         |          |           |          |                    |
@@ -194,5 +197,174 @@ The IP addresses assigned are chosen following the requirements specified in the
         |                                                                      |
         +----------------------------------------------------------------------+
 
+## Implementation
+###router-1
+```
+export DEBIAN_FRONTEND=noninteractive
 
- 
+sudo su
+
+#IP FORWARDING
+sysctl net.ipv4.ip_forward=1 #enables IP forwarding
+
+#INTERFACE CONFIGURATION
+#adds IP address to the interface
+ip add add 10.0.0.1/30 dev enp0s9
+#brings the interface up
+ip link set enp0s9 up
+
+#CREATION OF SUBINTERFACES FOR VLANS
+#creates the subinterface for VLAN 10
+ip link add link enp0s8 name enp0s8.10 type vlan id 10
+#adds IP address to the subinterface
+ip add add 192.168.3.254/23 dev enp0s8.10
+
+#creates the subinterfaces for VLAN 20
+ip link add link enp0s8 name enp0s8.20 type vlan id 20
+#adds IP address to the subinterface
+ip add add 192.168.9.254/23 dev enp0s8.20
+
+#set the interface up
+ip link set enp0s8 up
+#set the subinterface up
+ip link set enp0s8.10 up
+#set the subinterface up
+ip link set enp0s8.20 up
+
+#STATIC ROUTING
+#deletes the dafault gateway
+ip route del default
+#creates a static route to reach subnet B via router-2
+ip route add 192.168.1.0/24 via 10.0.0.2 dev enp0s9
+```
+
+###router-2
+```
+export DEBIAN_FRONTEND=noninteractive
+
+sudo su
+
+#IP FORWARDING
+sysctl net.ipv4.ip_forward=1 #enables IP forwarding
+
+#INTERFACE CONFIGURATION
+#adds IP address to the interface
+ip add add 192.168.1.254/24 dev enp0s8
+#brings the interface up
+ip link set enp0s8 up
+
+#adds IP address to the interface
+ip addr add 10.0.0.2/30 dev enp0s9
+#brings the interface up
+ip link set enp0s9 up
+
+#STATIC ROUTING
+#deletes the dafault gateway
+ip route del default
+#creates a static route to reach subnet A via router-1
+ip route add 192.168.2.0/23 via 10.0.0.1 dev enp0s9
+#creates a static route to reach subnet B via router-1
+ip route add 192.168.8.0/23 via 10.0.0.1 dev enp0s9
+```
+
+###switch
+```
+export DEBIAN_FRONTEND=noninteractive
+apt-get update
+
+# install tcpdump, a simple packet sniffer
+apt-get install -y tcpdump
+
+#download and install open vSwitch
+apt-get install -y openvswitch-common openvswitch-switch apt-transport-https ca-certificates curl software-properties-common
+
+sudo su
+
+#BRIDGE CREATION
+#creates a new bridge called brd
+ovs-vsctl add-br brd
+
+#INTERFACE CONFIGURATION
+#creates a trunk port
+ovs-vsctl add-port brd enp0s8
+#brings the interface up
+ip link set enp0s8 up
+
+#creates an access port on VLAN 10
+ovs-vsctl add-port brd enp0s9 tag=10
+#brings the interface up
+ip link set enp0s9 up
+
+#creates an access port on VLAN 20
+ovs-vsctl add-port brd enp0s10 tag=20
+#brings the interface up
+ip link set enp0s10 up
+```
+
+### host-a.sh
+```
+export DEBIAN_FRONTEND=noninteractive
+
+sudo su
+
+#INTERFACE CONFIGURATION
+#set up IP address to the interface
+ip add add 192.168.2.1/23 dev enp0s8
+#brings the interface up
+ip link set enp0s8 up
+
+#STATIC ROUTING
+#deletes the dafault gateway
+ip route del default
+#sets the default gateway on router-1
+ip route add default via 192.168.3.254
+
+```
+### host-b.sh
+```
+export DEBIAN_FRONTEND=noninteractive
+
+sudo su
+
+#INTERFACE CONFIGURATION
+#set up IP address to the interface
+ip add add 192.168.8.1/23 dev enp0s8
+#brings the interface up
+ip link set enp0s8 up
+
+#STATIC ROUTING
+#deletes the dafault gateway
+ip route del default
+#sets the default gateway on router-1
+ip route add default via 192.168.9.254
+
+```
+### host-c.sh
+```
+export DEBIAN_FRONTEND=noninteractive
+
+sudo su
+apt-get update
+
+#DOWNLOAD AND INSTALL DOCKER
+apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+apt-get update
+apt-get install -y docker-ce
+
+#RUN DOCKER IMAGE dustnic82/nginx-test
+docker system prune -a # clean up any docker resources
+docker run --name DNCSWebserver -p 80:80 -d dustnic82/nginx-test
+
+#INTERFACE CONFIG
+#assign ip address to interface
+ip addr add 192.168.1.1/24 dev enp0s8
+ip link set enp0s8 up
+
+#STATIC ROUTING
+#creates a static route to reach subnet A via router-2
+ip route add 192.168.2.0/23 via 192.168.1.254
+#creates a static route to reach subnet B via router-2
+ip route add 192.168.8.0/23 via 192.168.1.254
+```
