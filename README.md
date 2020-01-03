@@ -159,7 +159,7 @@ The link between the router and both LANs is in trunk mode to manage the traffic
 
 
 ## Implementation
-###router-1
+### router-1
 ```
 export DEBIAN_FRONTEND=noninteractive
 
@@ -199,7 +199,7 @@ ip route del default
 ip route add 192.168.1.0/24 via 10.0.0.2 dev enp0s9
 ```
 
-###router-2
+### router-2
 ```
 export DEBIAN_FRONTEND=noninteractive
 
@@ -228,7 +228,7 @@ ip route add 192.168.2.0/23 via 10.0.0.1 dev enp0s9
 ip route add 192.168.8.0/23 via 10.0.0.1 dev enp0s9
 ```
 
-###switch
+### switch
 ```
 export DEBIAN_FRONTEND=noninteractive
 apt-get update
