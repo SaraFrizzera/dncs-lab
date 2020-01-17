@@ -1,12 +1,12 @@
 # DNCS-LAB
 
 ### Table of Contents
-**[Requirements](#Requirements)**
-**[How-to](#How-to)**
-**[Assignment](#Assignment)**
-**[Design Requirements](#Design Requirements)**
-**[Tasks](#Tasks)**
-**[Notes and References](#Notes and References)**
+**[Requirements](#Requirements)**<br>
+**[How-to](#How-to)**<br>
+**[Assignment](#Assignment)**<br>
+**[Design Requirements](#Design-Requirements)**<br>
+**[Tasks](#Tasks)**<br>
+**[Notes and References](#Notes-and-References)**<br>
 
 This repository contains the Vagrant files required to run the virtual lab environment used in the DNCS course.
 ```
