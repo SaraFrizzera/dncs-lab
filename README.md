@@ -23,7 +23,7 @@
 # Tests
 * **[curl host-c](#curl-host-c)**
 * **[ping host-c](#ping-host-c)**
-* **[ovs-vsctl show on switch](#ovs-vsctl-show-on- switch)**
+* **[ovs-vsctl show on switch](#ovs-vsctl-show-on-switch)**
 * **[route -n](#route--n)**
 * **[curl host-c](#curl-host-c)**
 * **[ping host-c](#ping-host-c)**
@@ -340,11 +340,8 @@ sudo su
 apt-get update
 
 #DOWNLOAD AND INSTALL DOCKER
-apt-get install -y apt-transport-https ca-certificates curl software-properties-common
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
-add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-apt-get update
-apt-get install -y docker-ce
+curl -fsSL https://get.docker.com -o get-docker.sh
+sh get-docker.sh
 
 #RUN DOCKER IMAGE dustnic82/nginx-test
 docker system prune -a # clean up any docker resources
