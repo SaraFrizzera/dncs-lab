@@ -1,13 +1,26 @@
 # DNCS-LAB
-
 ### Table of Contents
-**[Requirements](#Requirements)**<br>
-**[How-to](#How-to)**<br>
-**[Assignment](#Assignment)**<br>
-**[Design Requirements](#Design-Requirements)**<br>
-**[Tasks](#Tasks)**<br>
-**[Notes and References](#Notes-and-References)**<br>
+# introduzione
+* **[Requirements](#Requirements)**
+* **[How-to](#How-to)**
+* **[Assignment](#Assignment)**
+* **[Design Requirements](#Design Requirements)**
+* **[Tasks](#Tasks)**
+* **[Notes and References](#Notes and References)**
 
+# Design
+* **[Subnets and IP addresses](#Subnets-and-IP-addresses)**
+* **[VLANs](#VLANs)**
+* **[Network map configured with IPs](#Network-map-configured-with-IPs)**
+# Implementation
+* **[router-1](#router-1)**
+* **[router-2](#router-2)**
+* **[switch](#switch)**
+* **[host-a.sh](#host-a.sh)**
+* **[host-b.sh](#host-b.sh)**
+* **[host-c.sh](#host-c.sh)**
+
+# Tests
 This repository contains the Vagrant files required to run the virtual lab environment used in the DNCS course.
 ```
 
@@ -337,3 +350,4 @@ ip route add 192.168.2.0/23 via 192.168.1.254
 #creates a static route to reach subnet B via router-2
 ip route add 192.168.8.0/23 via 192.168.1.254
 ```
+# TESTS
