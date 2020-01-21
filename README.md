@@ -4,9 +4,9 @@
 * **[Requirements](#Requirements)**
 * **[How-to](#How-to)**
 * **[Assignment](#Assignment)**
-* **[Design Requirements](#Design Requirements)**
+* **[Design Requirements](#Design-Requirements)**
 * **[Tasks](#Tasks)**
-* **[Notes and References](#Notes and References)**
+* **[Notes and References](#Notes-and-References)**
 
 # Design
 * **[Subnets and IP addresses](#Subnets-and-IP-addresses)**
