@@ -1,0 +1,18 @@
+FirstName: Sara
+LastName: Frizzera
+MatriculationNumber: 185274
+AcademicYear: 2019-2020
+GitHubUrl: YourGithubRepositoryURL
+Subnets:
+  HostsA:
+    RequiredAddresses: 273
+    SubnetAddress: YourHostsASubnetAddress
+    SubnetPrefixLength: YourHostsASubnetPrefixLength
+  HostsB:
+    RequiredAddresses: 504
+    SubnetAddress: YourHostsBSubnetAddress
+    SubnetPrefixLength: YourHostsBSubnetPrefixLength
+  Hub:
+    RequiredAddresses: 251
+    SubnetAddress: YourHubSubnetAddress
+    SubnetPrefixLength: YourHubSubnetPrefixLength
