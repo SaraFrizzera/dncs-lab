@@ -21,6 +21,13 @@
 * **[host-c.sh](#host-c.sh)**
 
 # Tests
+* **[curl host-c](#curl-host-c)**
+* **[ping host-c](#ping-host-c)**
+* **[ovs-vsctl show on switch](#ovs-vsctl-show-on- switch)**
+* **[route -n](#route--n)**
+* **[curl host-c](#curl-host-c)**
+* **[ping host-c](#ping-host-c)**
+
 This repository contains the Vagrant files required to run the virtual lab environment used in the DNCS course.
 ```
 
@@ -302,7 +309,9 @@ ip route del default
 ip route add default via 192.168.3.254
 
 ```
+
 ### host-b.sh
+
 ```
 export DEBIAN_FRONTEND=noninteractive
 
@@ -321,7 +330,9 @@ ip route del default
 ip route add default via 192.168.9.254
 
 ```
+
 ### host-c.sh
+
 ```
 export DEBIAN_FRONTEND=noninteractive
 
@@ -351,3 +362,101 @@ ip route add 192.168.2.0/23 via 192.168.1.254
 ip route add 192.168.8.0/23 via 192.168.1.254
 ```
 # TESTS
+
+## curl host-c
+
+```
+vagrant@host-a:~$ curl 192.168.1.1
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+```
+
+## ping host-c
+
+```
+vagrant@host-a:~$ ping 192.168.1.1
+PING 192.168.1.1 (192.168.1.1) 56(84) bytes of data.
+64 bytes from 192.168.1.1: icmp_seq=1 ttl=62 time=1.22 ms
+64 bytes from 192.168.1.1: icmp_seq=2 ttl=62 time=0.883 ms
+64 bytes from 192.168.1.1: icmp_seq=3 ttl=62 time=0.914 ms
+64 bytes from 192.168.1.1: icmp_seq=4 ttl=62 time=1.10 ms
+^C
+--- 192.168.1.1 ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 3005ms
+rtt min/avg/max/mdev = 0.883/1.032/1.224/0.144 ms
+```
+
+## ovs-vsctl show on switch
+ovs-vsctl show : Prints a brief overview of the switch database configuration
+
+```
+vagrant@switch:~$ sudo ovs-vsctl show
+74b1f289-c061-4220-9f18-e1f4b0e64947
+    Bridge brd
+        Port "enp0s10"
+            tag: 20
+            Interface "enp0s10"
+        Port "enp0s8"
+            Interface "enp0s8"
+        Port "enp0s9"
+            tag: 10
+            Interface "enp0s9"
+        Port brd
+            Interface brd
+                type: internal
+    ovs_version: "2.9.5"
+```
+
+## route -n
+
+### router 1
+```
+vagrant@router-1:~$ route -n
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+10.0.0.0        0.0.0.0         255.255.255.252 U     0      0        0 enp0s9
+10.0.2.0        0.0.0.0         255.255.255.0   U     0      0        0 enp0s3
+10.0.2.2        0.0.0.0         255.255.255.255 UH    100    0        0 enp0s3
+192.168.1.0     10.0.0.2        255.255.255.0   UG    0      0        0 enp0s9
+192.168.2.0     0.0.0.0         255.255.254.0   U     0      0        0 enp0s8.10
+192.168.8.0     0.0.0.0  
+```
+
+### router 2
+```
+vagrant@router-2:~$ route -n
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+10.0.0.0        0.0.0.0         255.255.255.252 U     0      0        0 enp0s9
+10.0.2.0        0.0.0.0         255.255.255.0   U     0      0        0 enp0s3
+10.0.2.2        0.0.0.0         255.255.255.255 UH    100    0        0 enp0s3
+192.168.1.0     0.0.0.0         255.255.255.0   U     0      0        0 enp0s8
+192.168.2.0     10.0.0.1        255.255.254.0   UG    0      0        0 enp0s9
+192.168.8.0     10.0.0.1        255.255.254.0   UG    0      0        0 enp0s9
+```
+
+# Authors
+Sara Frizzera, Gabriele Zanelli, Dmytro Kashchuk
